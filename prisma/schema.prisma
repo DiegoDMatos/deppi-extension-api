@@ -4,26 +4,78 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
+  id String @id @default(uuid())
 
-  roleId    Int?
-  role      Role?    @relation(fields: [roleId], references: [id])
+  name String
 
-  tasks      Task[]
+  email String @unique
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  passwordHash String @map("password_hash")
+
+  roles UserRole[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
+model Role {
+  id String @id @default(uuid())
+
+  slug        String  @unique
+  name        String
+  description String?
+
+  users UserRole[]
+
+  permissions RolePermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserRole {
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id])
+
+  role Role @relation(fields: [roleId], references: [id])
+
+  assignedAt DateTime @default(now())
+
+  @@id([userId, roleId])
+}
+
+model Permission {
+  id String @id @default(uuid())
+
+  slug        String  @unique
+  name        String
+  description String?
+
+  roles RolePermission[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role Role @relation(fields: [roleId], references: [id])
+
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+}
