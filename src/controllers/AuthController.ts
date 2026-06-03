@@ -17,4 +17,18 @@ export class AuthController {
 
     return response.status(201).json(user);
   }
+
+  async login(request: Request, response: Response){
+
+  const { email, password } = request.body;
+
+  const authService = new AuthService();
+
+  const result = await authService.login(
+    email,
+    password
+  );
+
+  return response.json(result);
+}
 }

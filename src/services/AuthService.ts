@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
 
 interface RegisterData {
@@ -37,4 +38,41 @@ export class AuthService {
             email: user.email
         };
   }
+
+async login(email: string, password: string){
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email
+    }
+  });
+
+  if(!user){
+    throw new Error("Email ou senha inválidos");
+  }
+
+  const passwordMatch = await bcrypt.compare(
+    password,
+    user.passwordHash
+  );
+
+  if(!passwordMatch){
+    throw new Error("Email ou senha inválidos");
+  }
+
+  const token = jwt.sign(
+    {
+      sub: user.id
+    },
+    process.env.JWT_SECRET!,
+    {
+      expiresIn: "1d"
+    }
+  );
+
+  return {
+    token
+  };
+}
+
 }
