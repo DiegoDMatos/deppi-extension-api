@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
+import { prisma } from "../lib/prisma";
 
 export class AuthController {
 
@@ -20,15 +21,24 @@ export class AuthController {
 
   async login(request: Request, response: Response){
 
-  const { email, password } = request.body;
+    const { email, password } = request.body;
 
-  const authService = new AuthService();
+    const authService = new AuthService();
 
-  const result = await authService.login(
-    email,
-    password
-  );
+    const result = await authService.login(
+      email,
+      password
+    );
 
-  return response.json(result);
+    return response.json(result);
+  }
+
+  async me(request: Request, response: Response){
+
+  const users = await prisma.user.findMany();
+
+  console.log(users);
+
+  return response.json(users);
 }
 }
