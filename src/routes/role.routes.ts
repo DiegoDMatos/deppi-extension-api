@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { RoleController } from "@/controllers/RoleController";
-import { permissionMiddleware } from "@/middleware/permission.middleware";
+import { permissionMiddleware } from "@/middlewares/permission.middleware";
 
 const router = Router();
 const controller = new RoleController();

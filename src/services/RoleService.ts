@@ -1,9 +1,9 @@
-import { prisma } from "@/prisma/client"; 
+import { prisma } from "@/prisma/client";
 
-export class RoleService{
-    async create(data: {slug: string, name: string; description?: string}){
+export class RoleService {
+    async create(data: { slug: string, name: string; description?: string }) {
         return prisma.role.create({
-            data:{
+            data: {
                 slug: data.slug,
                 name: data.name,
                 description: data.description,
@@ -11,24 +11,24 @@ export class RoleService{
         });
     }
 
-    async list(){
+    async list() {
         return prisma.role.findMany({
-            include: {permissions: {include: {permission: true}}},
+            include: { permissions: { include: { permission: true } } },
         });
     }
 
-    async addPermission(roleId: string, permissionId: string){
+    async addPermission(roleId: string, permissionId: string) {
         return prisma.rolePermission.create({
             data: {
-                roleId, 
-                permissionId,    
+                roleId,
+                permissionId,
             }
         });
     }
 
-    async assignRoleToUser(userId: string, roleId: string){
+    async assignRoleToUser(userId: string, roleId: string) {
         return prisma.userRole.create({
-            data:{
+            data: {
                 userId: userId,
                 roleId: roleId
             }
