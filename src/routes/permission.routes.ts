@@ -8,5 +8,9 @@ const router = Router();
 const controller = new PermissionController();
 
 router.use(AuthMiddleware);
-router.post("/permissions", permissionMiddleware())
+router.post("/permissions", permissionMiddleware("MANAGE_PERMISSIONS"), controller.create);
+
+router.get("/permissions", permissionMiddleware("VIEW_PERMISSIONS"), controller.list);
+
+export { router as permissionRouter };
 
