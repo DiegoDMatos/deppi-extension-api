@@ -9,7 +9,7 @@ export function permissionMiddleware(permissionSlug: string) {
   ) => {
     const user = await prisma.user.findUnique({
       where: {
-        id: req.user.userId,
+        id: req.user.id,
       },
       include: {
         roles: {

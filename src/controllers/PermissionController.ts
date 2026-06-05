@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PermissionService } from "@/service/PermissionService";
+import { PermissionService } from "@/services/PermissionService";
 
 const service = new PermissionService();
 
