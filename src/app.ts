@@ -1,11 +1,14 @@
 import express from "express";
+import { authRoutes } from "./routes/auth.routes";
+import { permissionRouter } from "./routes/permission.routes";
+import { roleRouter } from "./routes/role.routes";
 
-export const app = express();
+const app = express();
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  return res.json({
-    message: "API running"
-  });
-});
+app.use("/auth", authRoutes);
+app.use(permissionRouter);
+app.use(roleRouter);
+
+export { app };
