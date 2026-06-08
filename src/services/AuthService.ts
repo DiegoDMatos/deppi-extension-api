@@ -1,12 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
-
-interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-}
+import { RegisterData } from "../model/Auth";
 
 export class AuthService {
 
