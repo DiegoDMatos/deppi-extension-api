@@ -2,14 +2,16 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { prisma } from "../lib/prisma";
 import { RegisterData } from "../model/Auth";
+import { RegisterStudentDto } from "@/model/RegisterStudentDto";
+import { RegisterServidorDto } from "@/model/RegisterServidorDto";
 
 export class AuthService {
 
-  async register({ name, email, password }: RegisterData) {
+  async registerStudent(student: RegisterStudentDto) {
 
     const userAlreadyExists = await prisma.user.findUnique({
       where: {
-        email
+        email: student.email
       }
     });
 
@@ -17,14 +19,32 @@ export class AuthService {
       throw new Error("Usuário já existe");
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    const passwordHash = await bcrypt.hash(student.password, 10);
 
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
-        passwordHash
-      }
+        name: student.name,
+        email: student.email,
+        passwordHash,
+
+        student: {
+          create: {
+            educationLevel: student.educationLevel,
+            occupation: student.occupation,
+            perCapitaIncome: student.perCapitaIncome
+          }
+        },
+
+        roles: {
+          create: {
+            role: {
+              connect: {
+                slug: "ALUNO"
+              }
+            }
+          }
+        }
+    }
     });
 
     return {

@@ -1,23 +1,22 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
 import { prisma } from "../lib/prisma";
+import { RegisterStudentDto } from "@/model/RegisterStudentDto";
 
 export class AuthController {
 
-  async register(request: Request, response: Response){
+  async registerStudent(request: Request, response: Response){
 
-    const { name, email, password } = request.body;
+    const student: RegisterStudentDto = request.body;
 
     const authService = new AuthService();
 
-    const user = await authService.register({
-      name,
-      email,
-      password
-    });
+    const user = await authService.registerStudent(student);
 
     return response.status(201).json(user);
   }
+
+  async registerServidor(request: Request, response: Response){ }
 
   async login(request: Request, response: Response){
 
@@ -35,10 +34,10 @@ export class AuthController {
 
   async me(request: Request, response: Response){
 
-  const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany();
 
-  console.log(users);
+    console.log(users);
 
-  return response.json(users);
+    return response.json(users);
 }
 }
