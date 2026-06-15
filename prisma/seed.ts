@@ -29,6 +29,7 @@ async function main() {
     "MANAGE_ROLES",
     "MANAGE_USERS",
     "VIEW_PERMISSIONS",
+    "DEPPI_ROLES"
   ];
 
   for (const permissionName of permissions) {

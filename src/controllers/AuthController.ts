@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
 import { prisma } from "../lib/prisma";
 import { RegisterStudentDto } from "@/model/RegisterStudentDto";
+import { RegisterCivilServantDto } from "@/model/RegisterCivilServantDto";
 
 export class AuthController {
 
@@ -16,7 +17,25 @@ export class AuthController {
     return response.status(201).json(user);
   }
 
-  async registerServidor(request: Request, response: Response){ }
+  async registerDEPPI(request: Request, response: Response){
+    const civilServant: RegisterCivilServantDto = request.body;
+
+    const authService = new AuthService();
+
+    const user = await authService.registerDEPPI(civilServant);
+
+    return response.status(201).json(user);
+   }
+
+   async registerProfessor(request: Request, response: Response){
+    const civilServant: RegisterCivilServantDto = request.body;
+
+    const authService = new AuthService();
+
+    const user = await authService.registerProfessor(civilServant);
+
+    return response.status(201).json(user);
+   }
 
   async login(request: Request, response: Response){
 
