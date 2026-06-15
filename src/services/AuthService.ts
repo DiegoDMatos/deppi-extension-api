@@ -29,6 +29,7 @@ export class AuthService {
 
         student: {
           create: {
+            socialName: student.socialName,
             educationLevel: student.educationLevel,
             occupation: student.occupation,
             perCapitaIncome: student.perCapitaIncome

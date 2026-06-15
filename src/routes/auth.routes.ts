@@ -11,7 +11,7 @@ const authController = new AuthController();
 
 authRoutes.post("/register", authController.registerStudent);
 authRoutes.post("/admin/servidores",AuthMiddleware, permissionMiddleware("MANAGE_ROLES"), authController.registerDEPPI);
-authRoutes.post("/deppi/servidores",AuthMiddleware, permissionMiddleware("DEPPI_ROLES"), authController.registerProfessor);
+authRoutes.post("/deppi/servidores",AuthMiddleware, permissionMiddleware("DEPPI_ROLES"),authController.registerProfessor);
 authRoutes.post("/login", authController.login);
 
 authRoutes.get(
