@@ -115,7 +115,7 @@ CREATE TABLE "enrollment_status_history" (
 );
 
 -- CreateTable
-CREATE TABLE "students" (
+CREATE TABLE "Student" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "socialName" TEXT,
@@ -123,7 +123,7 @@ CREATE TABLE "students" (
     "occupation" TEXT NOT NULL,
     "perCapitaIncome" DOUBLE PRECISION NOT NULL,
 
-    CONSTRAINT "students_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Student_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -176,7 +176,7 @@ CREATE UNIQUE INDEX "roles_slug_key" ON "roles"("slug");
 CREATE UNIQUE INDEX "permissions_slug_key" ON "permissions"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "students_userId_key" ON "students"("userId");
+CREATE UNIQUE INDEX "Student_userId_key" ON "Student"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "civil_servants_userId_key" ON "civil_servants"("userId");
@@ -206,13 +206,13 @@ ALTER TABLE "role_permissions" ADD CONSTRAINT "role_permissions_permissionId_fke
 ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "students"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "Student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "enrollment_status_history" ADD CONSTRAINT "enrollment_status_history_enrollment_id_fkey" FOREIGN KEY ("enrollment_id") REFERENCES "enrollments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "students" ADD CONSTRAINT "students_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Student" ADD CONSTRAINT "Student_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "civil_servants" ADD CONSTRAINT "civil_servants_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -26,7 +26,7 @@ export async function enroll(req: Request, res: Response) {
 }
 
 export async function updateStatus(req: Request, res: Response) {
-  const userId = (req as any).userId;
+  const userId = (req as any).user.id;
   const enrollmentId = String(req.params.enrollmentId ?? "");
   const { status, reason } = req.body;
 
@@ -46,7 +46,7 @@ export async function updateStatus(req: Request, res: Response) {
 }
 
 export async function listMyEnrollments(req: Request, res: Response) {
-  const userId = (req as any).userId;
+  const userId = (req as any).user.id;
 
   try {
     const studentId = await getStudentId(userId);
