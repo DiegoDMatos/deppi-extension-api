@@ -2,7 +2,7 @@ import express from "express";
 import { authRoutes } from "./routes/auth.routes";
 import { permissionRouter } from "./routes/permission.routes";
 import { roleRouter } from "./routes/role.routes";
-import { courseRouter } from "./routes/courser.routes";
+import { courseRouter } from "./routes/courses.routes";
 import enrollmentRoutes from "./routes/enrollments.routes";
 
 const app = express();
