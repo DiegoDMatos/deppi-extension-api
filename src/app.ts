@@ -13,7 +13,5 @@ app.use("/auth", authRoutes);
 app.use(permissionRouter);
 app.use(roleRouter);
 app.use('/courses', courseRoutes);
-app.use("/enrollments", enrollmentRoutes);
-
 
 export { app };

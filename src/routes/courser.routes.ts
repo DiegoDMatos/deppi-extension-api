@@ -1,16 +1,16 @@
-import { Router } from 'express';
-import { CourseController } from '../controllers/CourseController';
+import { Router } from "express";
+import { CourseController } from "../controllers/CourseController";
+import { permissionMiddleware } from "../middlewares/permission.middleware";
+import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
-const courseRoutes = Router();
-const courseController = new CourseController();
+const router = Router();
+const controller = new CourseController();
 
-// 1. Rota para CRIAR: POST http://localhost:3333/courses
-courseRoutes.post('/', courseController.create);
+router.use(AuthMiddleware);
 
-// 2. Rota para LISTAR: GET http://localhost:3333/courses
-courseRoutes.get('/', courseController.list);
+router.post("/courses", permissionMiddleware("MANAGE_COURSES"), controller.create);
+router.get("/courses", permissionMiddleware("MANAGE_COURSES"), controller.list);
+router.put("/courses/:id", permissionMiddleware("MANAGE_COURSES"), controller.update);
+router.delete("/courses/:id", permissionMiddleware("MANAGE_COURSES"), controller.remove);
 
-// 3. Rota para DELETAR: DELETE http://localhost:3333/courses/:id
-courseRoutes.delete('/:id', courseController.remove);
-
-export { courseRoutes };
+export { router as courseRouter };
