@@ -140,6 +140,8 @@ model Enrollment {
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   student Student    @relation(fields: [studentId], references: [id]) 
 
+  history   EnrollmentStatusHistory[]
+
   @@map("enrollments")
 }
 
@@ -153,4 +155,30 @@ model Student {
   userId      String @unique
   user         User @relation(fields: [userId], references: [id])
   @@map("students")
+}
+
+enum EnrollmentStatusEnum {
+  PENDING
+  APPROVED
+  REJECTED
+  ACTIVE
+  COMPLETED
+  CANCELED
+}
+
+model EnrollmentStatusHistory {
+  id           String  @id @default(uuid())
+  enrollmentId String  @map("enrollment_id")
+
+  previousStatus EnrollmentStatusEnum? @map("previous_status")
+  newStatus      EnrollmentStatusEnum  @map("new_status")
+
+  changedBy    String  @map("changed_by") // User.id
+  changeReason String? @db.Text @map("change_reason")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+
+  @@map("enrollment_status_history")
 }
