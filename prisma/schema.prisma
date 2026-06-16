@@ -20,13 +20,12 @@ model User {
 
   passwordHash String @map("password_hash")
 
-  roles UserRole[]
-  student Student?
+  roles        UserRole[]
+  student      Student?
   civilServant CivilServant?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  student   Student?
 
   @@map("users")
 }
@@ -90,44 +89,43 @@ model RolePermission {
 }
 
 model Course {
-  id                        String   @id @default(uuid())
-  institutionId             String  
-  title                     String  
-  description               String?  @db.Text 
-  actionType                String   
-  thematicArea              String  
-  extensionLine             String  
-  
-  startDate                 DateTime 
-  endDate                   DateTime 
-  minParticipants           Int     
-  maxParticipants           Int      
-  workload                  Int      
-  
-  location                  String   
-  funding                   String?  
-  institutionalProgram      String?  
-  offeringModel             String   
-  targetMunicipalities      String   
-  
-  evaluationMethods         String   @db.Text 
-  marketingMethods          String   @db.Text 
-  activitiesPerformed       String   @db.Text 
-  responsibleName           String   
-  
-  presentation              String   @db.Text 
-  justification             String   @db.Text 
-  targetAudience            String   
-  generalObjective          String   @db.Text 
-  specificObjective         String   @db.Text 
-  methodology               String   @db.Text 
-  coverImage                String?  
+  id            String  @id @default(uuid())
+  institutionId String
+  title         String
+  description   String? @db.Text
+  actionType    String
+  thematicArea  String
+  extensionLine String
 
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt
+  startDate       DateTime
+  endDate         DateTime
+  minParticipants Int
+  maxParticipants Int
+  workload        Int
 
- 
-  enrollments               Enrollment[]
+  location             String
+  funding              String?
+  institutionalProgram String?
+  offeringModel        String
+  targetMunicipalities String
+
+  evaluationMethods   String @db.Text
+  marketingMethods    String @db.Text
+  activitiesPerformed String @db.Text
+  responsibleName     String
+
+  presentation      String  @db.Text
+  justification     String  @db.Text
+  targetAudience    String
+  generalObjective  String  @db.Text
+  specificObjective String  @db.Text
+  methodology       String  @db.Text
+  coverImage        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enrollments Enrollment[]
 
   @@map("courses")
 }
@@ -135,28 +133,16 @@ model Course {
 model Enrollment {
   id        String   @id @default(uuid())
   courseId  String
-  studentId String   
-  status    String   
+  studentId String
+  status    String
   createdAt DateTime @default(now())
 
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  student Student    @relation(fields: [studentId], references: [id]) 
+  course  Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id])
 
-  history   EnrollmentStatusHistory[]
+  history EnrollmentStatusHistory[]
 
   @@map("enrollments")
-}
-
-model Student {
-
-  id        String @id @default(uuid())
-  registry  String   @unique 
-  createdAt DateTime @default(now())
-  
-  enrollments Enrollment[]
-  userId      String @unique
-  user         User @relation(fields: [userId], references: [id])
-  @@map("students")
 }
 
 enum EnrollmentStatusEnum {
@@ -169,14 +155,14 @@ enum EnrollmentStatusEnum {
 }
 
 model EnrollmentStatusHistory {
-  id           String  @id @default(uuid())
-  enrollmentId String  @map("enrollment_id")
+  id           String @id @default(uuid())
+  enrollmentId String @map("enrollment_id")
 
   previousStatus EnrollmentStatusEnum? @map("previous_status")
   newStatus      EnrollmentStatusEnum  @map("new_status")
 
   changedBy    String  @map("changed_by") // User.id
-  changeReason String? @db.Text @map("change_reason")
+  changeReason String? @map("change_reason") @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -184,51 +170,53 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-model Student{
-  id String @id @default(uuid())
-  userId String @unique
-  socialName String?
-  educationLevel String
-  occupation String
+
+model Student {
+  id              String  @id @default(uuid())
+  userId          String  @unique
+  socialName      String?
+  educationLevel  String
+  occupation      String
   perCapitaIncome Float
 
-  user User @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  enrollments Enrollment[]
 }
 
 model CivilServant {
-  id String @id @default(uuid())
+  id     String @id @default(uuid())
   userId String @unique
 
-  registration String? @unique
-  preferredName String?
-  institutionalEmail String @unique
-  siapeEmail String? @unique
-  passwordRecoveryEmail String?
-  notificationEmail String?
-  googleClassroomEmail String?
-  institutionalPhones String[]
-  personalPhones String[]
-  isInPGD Boolean @default(false)
-  suapDepartment String
-  siapeAssignmentLocation String?
-  siapeExerciseLocation String?
-  employmentStatus String
-  workRegime String?
-  workSchedule String?
-  operatesXRayEquipment Boolean @default(false)
-  publicServiceStartDate DateTime?
-  institutionAppointmentDate DateTime?
+  registration                 String?   @unique
+  preferredName                String?
+  institutionalEmail           String    @unique
+  siapeEmail                   String?   @unique
+  passwordRecoveryEmail        String?
+  notificationEmail            String?
+  googleClassroomEmail         String?
+  institutionalPhones          String[]
+  personalPhones               String[]
+  isInPGD                      Boolean   @default(false)
+  suapDepartment               String
+  siapeAssignmentLocation      String?
+  siapeExerciseLocation        String?
+  employmentStatus             String
+  workRegime                   String?
+  workSchedule                 String?
+  operatesXRayEquipment        Boolean   @default(false)
+  publicServiceStartDate       DateTime?
+  institutionAppointmentDate   DateTime?
   institutionExerciseStartDate DateTime?
-  positionAppointmentDate DateTime?
-  positionExerciseStartDate DateTime?
-  position String
-  positionClass String
-  standard String
-  positionGroup String
-  vacancyCode String
-  bank String?
-  bankBranch String?
-  checkingAccount String?
+  positionAppointmentDate      DateTime?
+  positionExerciseStartDate    DateTime?
+  position                     String
+  positionClass                String
+  standard                     String
+  positionGroup                String
+  vacancyCode                  String
+  bank                         String?
+  bankBranch                   String?
+  checkingAccount              String?
 
   user User @relation(fields: [userId], references: [id])
 
