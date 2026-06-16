@@ -161,7 +161,7 @@ model EnrollmentStatusHistory {
   previousStatus EnrollmentStatusEnum? @map("previous_status")
   newStatus      EnrollmentStatusEnum  @map("new_status")
 
-  changedBy    String  @map("changed_by") // User.id
+  changedBy    String  @map("changed_by") 
   changeReason String? @map("change_reason") @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")

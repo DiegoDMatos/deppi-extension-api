@@ -8,9 +8,9 @@ const controller = new CourseController();
 
 router.use(AuthMiddleware);
 
-router.post("/courses", permissionMiddleware("MANAGE_COURSES"), controller.create);
-router.get("/courses", permissionMiddleware("MANAGE_COURSES"), controller.list);
-router.put("/courses/:id", permissionMiddleware("MANAGE_COURSES"), controller.update);
-router.delete("/courses/:id", permissionMiddleware("MANAGE_COURSES"), controller.remove);
+router.post("/courses", permissionMiddleware("CREATE_COURSES"), controller.create);
+router.get("/courses", permissionMiddleware("VIEW_COURSES"), controller.list);
+router.put("/courses/:id", permissionMiddleware("UPDATE_COURSES"), controller.update);
+router.delete("/courses/:id", permissionMiddleware("DELETE_COURSES"), controller.remove);
 
 export { router as courseRouter };

@@ -12,6 +12,6 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use(permissionRouter);
 app.use(roleRouter);
-app.use('/courses', courseRouter);
+app.use(courseRouter);
 app.use("/enrollments", enrollmentRoutes);
 export { app };
