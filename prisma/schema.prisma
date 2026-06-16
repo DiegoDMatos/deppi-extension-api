@@ -21,6 +21,8 @@ model User {
   passwordHash String @map("password_hash")
 
   roles UserRole[]
+  student Student?
+  civilServant CivilServant?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -181,4 +183,55 @@ model EnrollmentStatusHistory {
   enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
 
   @@map("enrollment_status_history")
+}
+model Student{
+  id String @id @default(uuid())
+  userId String @unique
+  socialName String?
+  educationLevel String
+  occupation String
+  perCapitaIncome Float
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model CivilServant {
+  id String @id @default(uuid())
+  userId String @unique
+
+  registration String? @unique
+  preferredName String?
+  institutionalEmail String @unique
+  siapeEmail String? @unique
+  passwordRecoveryEmail String?
+  notificationEmail String?
+  googleClassroomEmail String?
+  institutionalPhones String[]
+  personalPhones String[]
+  isInPGD Boolean @default(false)
+  suapDepartment String
+  siapeAssignmentLocation String?
+  siapeExerciseLocation String?
+  employmentStatus String
+  workRegime String?
+  workSchedule String?
+  operatesXRayEquipment Boolean @default(false)
+  publicServiceStartDate DateTime?
+  institutionAppointmentDate DateTime?
+  institutionExerciseStartDate DateTime?
+  positionAppointmentDate DateTime?
+  positionExerciseStartDate DateTime?
+  position String
+  positionClass String
+  standard String
+  positionGroup String
+  vacancyCode String
+  bank String?
+  bankBranch String?
+  checkingAccount String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
