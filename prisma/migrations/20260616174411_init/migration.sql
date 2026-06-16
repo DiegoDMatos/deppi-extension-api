@@ -1,3 +1,6 @@
+-- CreateEnum
+CREATE TYPE "EnrollmentStatusEnum" AS ENUM ('PENDING', 'APPROVED', 'REJECTED', 'ACTIVE', 'COMPLETED', 'CANCELED');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -99,13 +102,68 @@ CREATE TABLE "enrollments" (
 );
 
 -- CreateTable
+CREATE TABLE "enrollment_status_history" (
+    "id" TEXT NOT NULL,
+    "enrollment_id" TEXT NOT NULL,
+    "previous_status" "EnrollmentStatusEnum",
+    "new_status" "EnrollmentStatusEnum" NOT NULL,
+    "changed_by" TEXT NOT NULL,
+    "change_reason" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "enrollment_status_history_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "students" (
     "id" TEXT NOT NULL,
-    "registry" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "userId" TEXT NOT NULL,
+    "socialName" TEXT,
+    "educationLevel" TEXT NOT NULL,
+    "occupation" TEXT NOT NULL,
+    "perCapitaIncome" DOUBLE PRECISION NOT NULL,
 
     CONSTRAINT "students_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "civil_servants" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "registration" TEXT,
+    "preferredName" TEXT,
+    "institutionalEmail" TEXT NOT NULL,
+    "siapeEmail" TEXT,
+    "passwordRecoveryEmail" TEXT,
+    "notificationEmail" TEXT,
+    "googleClassroomEmail" TEXT,
+    "institutionalPhones" TEXT[],
+    "personalPhones" TEXT[],
+    "isInPGD" BOOLEAN NOT NULL DEFAULT false,
+    "suapDepartment" TEXT NOT NULL,
+    "siapeAssignmentLocation" TEXT,
+    "siapeExerciseLocation" TEXT,
+    "employmentStatus" TEXT NOT NULL,
+    "workRegime" TEXT,
+    "workSchedule" TEXT,
+    "operatesXRayEquipment" BOOLEAN NOT NULL DEFAULT false,
+    "publicServiceStartDate" TIMESTAMP(3),
+    "institutionAppointmentDate" TIMESTAMP(3),
+    "institutionExerciseStartDate" TIMESTAMP(3),
+    "positionAppointmentDate" TIMESTAMP(3),
+    "positionExerciseStartDate" TIMESTAMP(3),
+    "position" TEXT NOT NULL,
+    "positionClass" TEXT NOT NULL,
+    "standard" TEXT NOT NULL,
+    "positionGroup" TEXT NOT NULL,
+    "vacancyCode" TEXT NOT NULL,
+    "bank" TEXT,
+    "bankBranch" TEXT,
+    "checkingAccount" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "civil_servants_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -118,10 +176,19 @@ CREATE UNIQUE INDEX "roles_slug_key" ON "roles"("slug");
 CREATE UNIQUE INDEX "permissions_slug_key" ON "permissions"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "students_registry_key" ON "students"("registry");
+CREATE UNIQUE INDEX "students_userId_key" ON "students"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "students_userId_key" ON "students"("userId");
+CREATE UNIQUE INDEX "civil_servants_userId_key" ON "civil_servants"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "civil_servants_registration_key" ON "civil_servants"("registration");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "civil_servants_institutionalEmail_key" ON "civil_servants"("institutionalEmail");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "civil_servants_siapeEmail_key" ON "civil_servants"("siapeEmail");
 
 -- AddForeignKey
 ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -142,4 +209,10 @@ ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_courseId_fkey" FOREIGN KEY
 ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_studentId_fkey" FOREIGN KEY ("studentId") REFERENCES "students"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "enrollment_status_history" ADD CONSTRAINT "enrollment_status_history_enrollment_id_fkey" FOREIGN KEY ("enrollment_id") REFERENCES "enrollments"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "students" ADD CONSTRAINT "students_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "civil_servants" ADD CONSTRAINT "civil_servants_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

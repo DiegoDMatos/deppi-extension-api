@@ -170,17 +170,17 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-
-model Student {
-  id              String  @id @default(uuid())
-  userId          String  @unique
-  socialName      String?
-  educationLevel  String
-  occupation      String
+model Student{
+  id String @id @default(uuid())
+  userId String @unique
+  socialName String?
+  educationLevel String
+  occupation String
   perCapitaIncome Float
 
-  user        User         @relation(fields: [userId], references: [id])
   enrollments Enrollment[]
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model CivilServant {
@@ -222,4 +222,6 @@ model CivilServant {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("civil_servants")
 }

@@ -23,6 +23,22 @@ async function main() {
     },
   });
 
+    await prisma.role.create({
+    data: {
+        slug: "DEPPI",
+        name: "DEPPI",
+        description: "Deppi",
+    },
+  });
+
+    await prisma.role.create({
+    data: {
+        slug: "PROFESSOR",
+        name: "PROFESSOR",
+        description: "Professor",
+    },
+  });
+
   const permissions = [
     "CREATE_USER",
     "MANAGE_PERMISSIONS",
