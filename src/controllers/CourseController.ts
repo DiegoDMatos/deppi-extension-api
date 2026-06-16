@@ -34,14 +34,27 @@ export class CourseController {
       // Chama o método delete do Service passando esse ID
     
       if(!id || typeof id !== 'string'){
-      return res.status(400).json({message: "Invalid or missing course ID." });
+      return res.status(400).json({message: "ID inválido ou ausente." });
       }
        await courseService.delete(id);
       // Retorna status 204 (No Content) indicando sucesso sem corpo de resposta
       return res.status(204).send();
     } catch (error: any) {
       // Se o curso não for encontrado (erro que tratamos no service), cai aqui
-      return res.status(404).json({ message: error.message || "Course not found" });
+      return res.status(404).json({ message: error.message || "Curso não encontrado" });
+    }
+  }
+  async update(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params; 
+      const updateData = req.body;
+      if(!id || typeof id !== 'string'){
+        return res.status(400).json({message: "ID inválido ou ausente." });
+      }
+      const updatedCourse = await courseService.update(id, updateData);
+      return res.status(200).json(updatedCourse);
+    } catch (error: any) {
+      return res.status(404).json({ message: error.message || "Curso não encontrado" });
     }
   }
 }
