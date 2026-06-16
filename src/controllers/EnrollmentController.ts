@@ -78,3 +78,42 @@ export async function listHistory(req: Request, res: Response) {
   const history = await enrollmentService.getEnrollmentHistory(enrollmentId);
   return res.json(history);
 }
+
+export async function approveEnrollment(req: Request, res: Response) {
+  const userId = (req as any).user.id;
+  const enrollmentId = String(req.params.enrollmentId);
+  const { reason } = req.body;
+
+  try {
+    const result = await enrollmentService.updateEnrollmentStatus(enrollmentId, "APPROVED", userId, reason);
+    return res.json(result);
+  } catch (err: any) {
+    return res.status(400).json({ error: err.message });
+  }
+}
+
+export async function rejectEnrollment(req: Request, res: Response) {
+  const userId = (req as any).user.id;
+  const enrollmentId = String(req.params.enrollmentId);
+  const { reason } = req.body;
+
+  try {
+    const result = await enrollmentService.updateEnrollmentStatus(enrollmentId, "REJECTED", userId, reason);
+    return res.json(result);
+  } catch (err: any) {
+    return res.status(400).json({ error: err.message });
+  }
+}
+
+export async function cancelEnrollment(req: Request, res: Response) {
+  const userId = (req as any).user.id;
+  const enrollmentId = String(req.params.enrollmentId);
+  const { reason } = req.body;
+
+  try {
+    const result = await enrollmentService.updateEnrollmentStatus(enrollmentId, "CANCELED", userId, reason);
+    return res.json(result);
+  } catch (err: any) {
+    return res.status(400).json({ error: err.message });
+  }
+}
