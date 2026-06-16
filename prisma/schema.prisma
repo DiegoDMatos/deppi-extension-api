@@ -26,7 +26,6 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  student   Student?
 
   @@map("users")
 }
@@ -147,18 +146,6 @@ model Enrollment {
   @@map("enrollments")
 }
 
-model Student {
-
-  id        String @id @default(uuid())
-  registry  String   @unique 
-  createdAt DateTime @default(now())
-  
-  enrollments Enrollment[]
-  userId      String @unique
-  user         User @relation(fields: [userId], references: [id])
-  @@map("students")
-}
-
 enum EnrollmentStatusEnum {
   PENDING
   APPROVED
@@ -184,6 +171,7 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
+
 model Student{
   id String @id @default(uuid())
   userId String @unique
@@ -192,7 +180,11 @@ model Student{
   occupation String
   perCapitaIncome Float
 
+  enrollments Enrollment[]
+
   user User @relation(fields: [userId], references: [id])
+
+  @@map("students")
 }
 
 model CivilServant {
@@ -234,4 +226,6 @@ model CivilServant {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("civil_servants")
 }
