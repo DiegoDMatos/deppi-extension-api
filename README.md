@@ -199,4 +199,4 @@ Base URL: `http://localhost:3333`
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a licença **ISC**. Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
+Este projeto está licenciado sob a licença **MIT**. Consulte o arquivo [LICENSE](./LICENSE) para mais detalhes.
