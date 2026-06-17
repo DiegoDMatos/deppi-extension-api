@@ -58,7 +58,7 @@ docker compose up -d
 ### 5. Gere o cliente Prisma e execute as migrations
 
 ```bash
-npm run prisma generation
+npx prisma generate
 ```
 
 > Este comando gera o cliente Prisma e aplica as migrations. O seed (`prisma/seed.ts`) é executado automaticamente após as migrations.
@@ -125,7 +125,7 @@ npx prisma studio
 | Comando                     | Descrição                                              |
 |-----------------------------|--------------------------------------------------------|
 | `npm run dev`               | Inicia o servidor com hot reload via `tsx watch`       |
-| `npm run prisma generation` | Gera o cliente Prisma e executa as migrations com seed |
+| `npx prisma generate` | Gera o cliente Prisma e executa as migrations com seed |
 
 ---
 
