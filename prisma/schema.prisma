@@ -20,6 +20,32 @@ model User {
 
   passwordHash String @map("password_hash")
 
+  personalPhones String[]
+  cpf                    String   @unique
+  registrationName       String   
+  dateOfBirth            DateTime 
+  maritalStatus          String   
+  placeOfBirth           String   
+  sex                    String
+  bloodType              String?   
+  rhFactor               String?   
+  numberOfDependents     Int      
+  raceEthnicity          String   
+  fatherName             String?   
+  motherName             String?   
+  pisPasep               String   @unique 
+  academicTitle          String 
+  educationLevel         String   
+  address                String
+  identityNumber         String   @unique 
+  issuingAgency          String   
+  issuingState           String  
+  issueDate              DateTime 
+  voterRegistrationNumber String  @unique 
+  electoralZone          String
+  electoralSection       String 
+  voterRegistrationState String  
+
   roles        UserRole[]
   student      Student?
   civilServant CivilServant?
@@ -195,7 +221,6 @@ model CivilServant {
   notificationEmail            String?
   googleClassroomEmail         String?
   institutionalPhones          String[]
-  personalPhones               String[]
   isInPGD                      Boolean   @default(false)
   suapDepartment               String
   siapeAssignmentLocation      String?
