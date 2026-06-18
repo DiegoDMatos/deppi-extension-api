@@ -2,7 +2,7 @@ export interface RegisterCivilServantDto {
     name: string;
     email: string;
     password: string;
-
+    
     registration?: string;
     preferredName?: string;
     institutionalEmail: string;
@@ -11,7 +11,6 @@ export interface RegisterCivilServantDto {
     notificationEmail?: string;
     googleClassroomEmail?: string;
     institutionalPhones: string[];
-    personalPhones: string[];
     isInPGD: boolean;
     suapDepartment: string;
     siapeAssignmentLocation?: string;
