@@ -23,28 +23,7 @@ async function main() {
   });
 
   const deppiRole = await prisma.role.upsert({
-  where: { slug: "DEPPI" },
-  update: {},
-  create: {
-    slug: "DEPPI",
-    name: "DEPPI",
-    description: "Deppi",
-  },
-});
-
-const deppiPermissions = [
-  "enrollment.approve",
-  "enrollment.reject",
-  "enrollment.cancel",
-  "CREATE_COURSES",
-  "VIEW_COURSES",
-  "UPDATE_COURSES",
-  "DELETE_COURSES"
-];
-
-for (const permissionSlug of deppiPermissions) {
-  const permission = await prisma.permission.upsert({
-    where: { slug: permissionSlug },
+    where: { slug: "DEPPI" },
     update: {},
     create: {
       slug: "DEPPI",
@@ -124,9 +103,9 @@ for (const permissionSlug of deppiPermissions) {
       create: { roleId: adminRole.id, permissionId: permission.id },
     });
   }
-  
+
   const passwordHash = await bcrypt.hash("123456", 10);
-  
+
   await prisma.user.upsert({
     where: { email: "admin@email.com" },
     update: { name: "Admin", passwordHash },
@@ -199,5 +178,3 @@ for (const permissionSlug of deppiPermissions) {
 }
 
 main();
-
-}

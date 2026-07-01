@@ -5,7 +5,7 @@ const dateStringSchema = z
   .string({ error: "Data é obrigatória" })
   .min(1, "Data é obrigatória")
   .refine((val) => !isNaN(Date.parse(val)), {
-    message: "Data inválida. Use o formato ISO 8601 (ex: 2024-01-15)",
+    message: "Data inválida. Use o formato  (2024-01-15)",
   })
   .optional();
 

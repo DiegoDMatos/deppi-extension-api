@@ -1,1 +1,1 @@
-export type { RegisterCivilServantDto } from "@/schemas/registercivilservant.schema";
+export type { RegisterCivilServantDto } from "@/schemas/registercivilservant";
