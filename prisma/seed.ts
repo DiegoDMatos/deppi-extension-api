@@ -109,9 +109,9 @@ for (const permissionSlug of deppiPermissions) {
     });
 
   }
-
+  /*
   const passwordHash = await bcrypt.hash("123456", 10);
-
+  
   await prisma.user.upsert({
     where: { email: "admin@email.com" },
     update: {
@@ -145,7 +145,7 @@ await prisma.user.upsert({
       },
     },
   },
-});
+}); */
 
   console.log("Seed executada com sucesso");
 }

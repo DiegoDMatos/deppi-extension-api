@@ -20,31 +20,31 @@ model User {
 
   passwordHash String @map("password_hash")
 
-  personalPhones String[]
-  cpf                    String   @unique
-  registrationName       String   
-  dateOfBirth            DateTime 
-  maritalStatus          String   
-  placeOfBirth           String   
-  sex                    String
-  bloodType              String?   
-  rhFactor               String?   
-  numberOfDependents     Int      
-  raceEthnicity          String   
-  fatherName             String?   
-  motherName             String?   
-  pisPasep               String   @unique 
-  academicTitle          String 
-  educationLevel         String   
-  address                String
-  identityNumber         String   @unique 
-  issuingAgency          String   
-  issuingState           String  
-  issueDate              DateTime 
-  voterRegistrationNumber String  @unique 
-  electoralZone          String
-  electoralSection       String 
-  voterRegistrationState String  
+  personalPhones          String[]
+  cpf                     String   @unique
+  registrationName        String
+  dateOfBirth             DateTime
+  maritalStatus           String
+  placeOfBirth            String
+  sex                     String
+  bloodType               String?
+  rhFactor                String?
+  numberOfDependents      Int
+  raceEthnicity           String
+  fatherName              String?
+  motherName              String?
+  pisPasep                String   @unique
+  academicTitle           String
+  educationLevel          String
+  address                 String
+  identityNumber          String   @unique
+  issuingAgency           String
+  issuingState            String
+  issueDate               DateTime
+  voterRegistrationNumber String   @unique
+  electoralZone           String
+  electoralSection        String
+  voterRegistrationState  String
 
   roles        UserRole[]
   student      Student?
@@ -146,7 +146,8 @@ model Course {
   generalObjective  String  @db.Text
   specificObjective String  @db.Text
   methodology       String  @db.Text
-  coverImage        String?
+  coverImage        File?   @relation(fields: [coverId], references: [id])
+  coverId           String? @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -156,12 +157,28 @@ model Course {
   @@map("courses")
 }
 
+model File {
+  id           String      @id @default(uuid())
+  filename     String      @unique
+  originalName String
+  mimeType     String
+  size         Int
+  path         String
+  course       Course?
+  enrollment   Enrollment? @relation(fields: [enrollmentId], references: [id])
+  createdAt    DateTime    @default(now())
+  enrollmentId String?
+
+  @@map("files")
+}
+
 model Enrollment {
   id        String   @id @default(uuid())
   courseId  String
   studentId String
   status    String
   createdAt DateTime @default(now())
+  documents File[]
 
   course  Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
   student Student @relation(fields: [studentId], references: [id])
@@ -187,7 +204,7 @@ model EnrollmentStatusHistory {
   previousStatus EnrollmentStatusEnum? @map("previous_status")
   newStatus      EnrollmentStatusEnum  @map("new_status")
 
-  changedBy    String  @map("changed_by") 
+  changedBy    String  @map("changed_by")
   changeReason String? @map("change_reason") @db.Text
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -196,12 +213,13 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-model Student{
-  id String @id @default(uuid())
-  userId String @unique
-  socialName String?
-  educationLevel String
-  occupation String
+
+model Student {
+  id              String  @id @default(uuid())
+  userId          String  @unique
+  socialName      String?
+  educationLevel  String
+  occupation      String
   perCapitaIncome Float
 
   enrollments Enrollment[]
