@@ -27,6 +27,37 @@ export class CourseController {
     }
   }
 
+  async getCourseEnrollmentsReport(req: Request, res: Response){
+    try{
+      const { id } = req.params;
+
+      if(!id || typeof id !== 'string'){
+      return res.status(400).json({message: "ID inválido ou ausente." });
+      }
+      const courseEnrollments = await courseService.getCourseEnrollmentsReport(id);
+
+      if(!courseEnrollments){
+        return res.status(404).json({message: "Curso não encontrado"});
+      }
+
+      return res.status(200).json(courseEnrollments);
+    } catch (error) {
+      return res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  }
+
+  async getGeneralReport(req: Request, res: Response) {
+    try {
+      const generalReport = await courseService.getGeneralReport();
+
+      return res.status(200).json(generalReport);
+    } catch (error) {
+      return res.status(500).json({
+        message: "Erro interno do servidor.",
+      });
+    }
+}
+
   async remove(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params; 

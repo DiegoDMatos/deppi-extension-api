@@ -12,5 +12,7 @@ router.post("/courses", permissionMiddleware("CREATE_COURSES"), controller.creat
 router.get("/courses", permissionMiddleware("VIEW_COURSES"), controller.list);
 router.put("/courses/:id", permissionMiddleware("UPDATE_COURSES"), controller.update);
 router.delete("/courses/:id", permissionMiddleware("DELETE_COURSES"), controller.remove);
+router.get("/courses/:id/enrollments", permissionMiddleware("DEPPI_ROLES"), controller.getCourseEnrollmentsReport);
+router.get("/reports/general", permissionMiddleware("DEPPI_ROLES"), controller.getGeneralReport);
 
 export { router as courseRouter };

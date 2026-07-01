@@ -117,3 +117,15 @@ export async function cancelEnrollment(req: Request, res: Response) {
     return res.status(400).json({ error: err.message });
   }
 }
+
+export async function getEnrollmentsByStatusReport(req: Request, res: Response) {
+  try {
+    const enrollmentByStatus = await enrollmentService.getEnrollmentsByStatusReport();
+
+    return res.status(200).json(enrollmentByStatus);
+  } catch (error) {
+    return res.status(500).json({
+      message: "Erro interno do servidor."
+    });
+  }
+}
