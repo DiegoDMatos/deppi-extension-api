@@ -2,7 +2,8 @@ import { z } from "zod";
 import { baseUserSchema } from "./registerstudent.schema";
 
 const dateStringSchema = z
-  .string()
+  .string({ error: "Data é obrigatória" })
+  .min(1, "Data é obrigatória")
   .refine((val) => !isNaN(Date.parse(val)), {
     message: "Data inválida. Use o formato ISO 8601 (ex: 2024-01-15)",
   })

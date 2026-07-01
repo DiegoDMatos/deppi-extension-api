@@ -4,7 +4,7 @@ import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 import { permissionMiddleware } from "@/middlewares/permission.middleware";
 import { validate } from "@/middlewares/validate.middleware";
 import { registerStudentSchema } from "@/schemas/registerstudent.schema";
-import { registerCivilServantSchema } from "@/schemas/registercivilservant.schema";
+import { registerCivilServantSchema } from "@/schemas/registercivilservant";
 
 const authRoutes = Router();
 const authController = new AuthController();
