@@ -200,7 +200,6 @@ model Student{
   id String @id @default(uuid())
   userId String @unique
   socialName String?
-  educationLevel String
   occupation String
   perCapitaIncome Float
 

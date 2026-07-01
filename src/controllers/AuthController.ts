@@ -22,7 +22,7 @@ export class AuthController {
 
     const authService = new AuthService();
 
-    const user = await authService.registerDEPPI(civilServant);
+    const user = await authService.registerCivilServant(civilServant, "DEPPI");
 
     return response.status(201).json(user);
    }
@@ -32,7 +32,7 @@ export class AuthController {
 
     const authService = new AuthService();
 
-    const user = await authService.registerProfessor(civilServant);
+    const user = await authService.registerCivilServant(civilServant, "PROFESSOR");
 
     return response.status(201).json(user);
    }
