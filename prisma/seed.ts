@@ -39,6 +39,11 @@ const deppiPermissions = [
   "enrollment.approve",
   "enrollment.reject",
   "enrollment.cancel",
+  "DEPPI_ROLES",
+  "CREATE_COURSES",
+  "VIEW_COURSES",
+  "UPDATE_COURSES",
+  "DELETE_COURSES",
 ];
 
 for (const permissionSlug of deppiPermissions) {
@@ -81,7 +86,11 @@ for (const permissionSlug of deppiPermissions) {
     "MANAGE_ROLES",
     "MANAGE_USERS",
     "VIEW_PERMISSIONS",
-    "DEPPI_ROLES"
+    "DEPPI_ROLES",
+    "CREATE_COURSES",
+    "VIEW_COURSES",
+    "UPDATE_COURSES",
+    "DELETE_COURSES",
   ];
 
   for (const permissionName of permissions) {
@@ -122,6 +131,27 @@ for (const permissionSlug of deppiPermissions) {
       name: "Admin",
       email: "admin@email.com",
       passwordHash,
+      personalPhones: ["88999990000"],
+      cpf: "11111111111",
+      registrationName: "Administrador do Sistema",
+      dateOfBirth: new Date("1990-01-01"),
+      maritalStatus: "Solteiro",
+      placeOfBirth: "Crato",
+      sex: "Masculino",
+      numberOfDependents: 0,
+      raceEthnicity: "Branca",
+      pisPasep: "12345678901",
+      academicTitle: "Bacharel",
+      educationLevel: "Ensino Superior",
+      address: "Rua das Flores, 100",
+      identityNumber: "123456789",
+      issuingAgency: "SSP",
+      issuingState: "CE",
+      issueDate: new Date("2010-01-01"),
+      voterRegistrationNumber: "123456789012",
+      electoralZone: "001",
+      electoralSection: "001",
+      voterRegistrationState: "CE",
       cpf: "000.000.000-00",
       registrationName: "Administrador",
       dateOfBirth: new Date("1990-01-01"),
@@ -150,39 +180,23 @@ for (const permissionSlug of deppiPermissions) {
     },
   });
 
-  await prisma.user.upsert({
-    where: { email: "deppi@email.com" },
-    update: {},
-    create: {
-      name: "DEPPI",
-      email: "deppi@email.com",
-      passwordHash: passwordHash,
-      cpf: "111.111.111-11",
-      registrationName: "Usuário DEPPI",
-      dateOfBirth: new Date("1990-01-01"),
-      maritalStatus: "Solteiro",
-      placeOfBirth: "Brasília",
-      sex: "Não informado",
-      numberOfDependents: 0,
-      raceEthnicity: "Não informado",
-      pisPasep: "111.11111.11-1",
-      academicTitle: "Não informado",
-      educationLevel: "Não informado",
-      address: "Não informado",
-      identityNumber: "1111111",
-      issuingAgency: "SSP",
-      issuingState: "DF",
-      issueDate: new Date("2000-01-01"),
-      voterRegistrationNumber: "111111111111",
-      electoralZone: "001",
-      electoralSection: "0001",
-      voterRegistrationState: "DF",
-      roles: {
-        create: {
-          roleId: deppiRole.id,
-        },
+  const deppiPasswordHash = await bcrypt.hash("123456", 10);
+
+await prisma.user.upsert({
+  where: { email: "deppi@email.com" },
+  update: {},
+  create: {
+    name: "DEPPI",
+    email: "deppi@email.com",
+    passwordHash: deppiPasswordHash,
+    roles: {
+      create: {
+        roleId: deppiRole.id,
       },
     },
-  });
+  },
+});
+
+  console.log("Seed executada com sucesso");
 }
 main();
