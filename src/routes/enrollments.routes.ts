@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 import { permissionMiddleware } from "../middlewares/permission.middleware";
+import { validate } from "../middlewares/validate.middleware";
+import { enrollSchema, updateEnrollmentStatusSchema, approveRejectSchema } from "../schemas/enrollment.schema";
 import {
   enroll,
   updateStatus,
@@ -15,15 +17,29 @@ import {
 const router = Router();
 router.use(AuthMiddleware);
 
-router.post("/", enroll);
+router.post("/", validate(enrollSchema), enroll);
 router.get("/me", listMyEnrollments);
-router.patch("/:enrollmentId/status", updateStatus);
+router.patch("/:enrollmentId/status", validate(updateEnrollmentStatusSchema), updateStatus);
 router.get("/:enrollmentId/history", listHistory);
 router.get("/course/:courseId", listCourseEnrollments);
 
-
-router.patch("/:enrollmentId/approve", permissionMiddleware("enrollment.approve"), approveEnrollment);
-router.patch("/:enrollmentId/reject", permissionMiddleware("enrollment.reject"), rejectEnrollment);
-router.patch("/:enrollmentId/cancel", permissionMiddleware("enrollment.cancel"), cancelEnrollment);
+router.patch(
+  "/:enrollmentId/approve",
+  permissionMiddleware("enrollment.approve"),
+  validate(approveRejectSchema),
+  approveEnrollment
+);
+router.patch(
+  "/:enrollmentId/reject",
+  permissionMiddleware("enrollment.reject"),
+  validate(approveRejectSchema),
+  rejectEnrollment
+);
+router.patch(
+  "/:enrollmentId/cancel",
+  permissionMiddleware("enrollment.cancel"),
+  validate(approveRejectSchema),
+  cancelEnrollment
+);
 
 export default router;
