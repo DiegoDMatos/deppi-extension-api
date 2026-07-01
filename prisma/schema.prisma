@@ -169,13 +169,11 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-
-model Student {
-  id              String       @id @default(uuid())
-  userId          String       @unique
-  socialName      String?
-  educationLevel  String
-  occupation      String
+model Student{
+  id String @id @default(uuid())
+  userId String @unique
+  socialName String?
+  occupation String
   perCapitaIncome Float
   user            User         @relation(fields: [userId], references: [id])
   enrollments     Enrollment[]

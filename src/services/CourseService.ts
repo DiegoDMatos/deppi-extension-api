@@ -24,6 +24,54 @@ export class CourseService {
     });
   }
 
+  async getCourseEnrollmentsReport(courseId: string) {
+    return prisma.course.findUnique({
+      where: {
+        id: courseId,
+      },
+      select: {
+        id: true,
+        title: true,
+        enrollments: {
+          select: {
+            id: true,
+            status: true,
+            createdAt: true,
+            student: {
+              select: {
+                id: true,
+                occupation: true,
+                user: {
+                  select: {
+                    name: true,
+                    email: true,
+                    cpf: true,
+                    personalPhones: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
+  async getGeneralReport(){
+    const [totalCourses, totalStudents, totalCivilServants, totalEnrollments,] = await Promise.all([
+      prisma.course.count(),
+      prisma.student.count(),
+      prisma.civilServant.count(),
+      prisma.enrollment.count(),
+    ]);
+    return {
+      totalCourses,
+      totalStudents,
+      totalCivilServants,
+      totalEnrollments,
+    };
+  }
+
   async delete(id: string) {
     const courseExists = await prisma.course.findUnique({
       where: { id }
