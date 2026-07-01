@@ -21,7 +21,6 @@ router.patch("/:enrollmentId/status", updateStatus);
 router.get("/:enrollmentId/history", listHistory);
 router.get("/course/:courseId", listCourseEnrollments);
 
-
 router.patch("/:enrollmentId/approve", permissionMiddleware("enrollment.approve"), approveEnrollment);
 router.patch("/:enrollmentId/reject", permissionMiddleware("enrollment.reject"), rejectEnrollment);
 router.patch("/:enrollmentId/cancel", permissionMiddleware("enrollment.cancel"), cancelEnrollment);
