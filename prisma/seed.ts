@@ -122,6 +122,26 @@ for (const permissionSlug of deppiPermissions) {
       name: "Admin",
       email: "admin@email.com",
       passwordHash,
+      cpf: "000.000.000-00",
+      registrationName: "Administrador",
+      dateOfBirth: new Date("1990-01-01"),
+      maritalStatus: "Solteiro",
+      placeOfBirth: "Brasília",
+      sex: "Não informado",
+      numberOfDependents: 0,
+      raceEthnicity: "Não informado",
+      pisPasep: "000.00000.00-0",
+      academicTitle: "Não informado",
+      educationLevel: "Não informado",
+      address: "Não informado",
+      identityNumber: "0000000",
+      issuingAgency: "SSP",
+      issuingState: "DF",
+      issueDate: new Date("2000-01-01"),
+      voterRegistrationNumber: "000000000000",
+      electoralZone: "000",
+      electoralSection: "0000",
+      voterRegistrationState: "DF",
       roles: {
         create: {
           roleId: adminRole.id,
@@ -130,23 +150,39 @@ for (const permissionSlug of deppiPermissions) {
     },
   });
 
-  const deppiPasswordHash = await bcrypt.hash("123456", 10);
-
-await prisma.user.upsert({
-  where: { email: "deppi@email.com" },
-  update: {},
-  create: {
-    name: "DEPPI",
-    email: "deppi@email.com",
-    passwordHash: deppiPasswordHash,
-    roles: {
-      create: {
-        roleId: deppiRole.id,
+  await prisma.user.upsert({
+    where: { email: "deppi@email.com" },
+    update: {},
+    create: {
+      name: "DEPPI",
+      email: "deppi@email.com",
+      passwordHash: passwordHash,
+      cpf: "111.111.111-11",
+      registrationName: "Usuário DEPPI",
+      dateOfBirth: new Date("1990-01-01"),
+      maritalStatus: "Solteiro",
+      placeOfBirth: "Brasília",
+      sex: "Não informado",
+      numberOfDependents: 0,
+      raceEthnicity: "Não informado",
+      pisPasep: "111.11111.11-1",
+      academicTitle: "Não informado",
+      educationLevel: "Não informado",
+      address: "Não informado",
+      identityNumber: "1111111",
+      issuingAgency: "SSP",
+      issuingState: "DF",
+      issueDate: new Date("2000-01-01"),
+      voterRegistrationNumber: "111111111111",
+      electoralZone: "001",
+      electoralSection: "0001",
+      voterRegistrationState: "DF",
+      roles: {
+        create: {
+          roleId: deppiRole.id,
+        },
       },
     },
-  },
-});
-
-  console.log("Seed executada com sucesso");
+  });
 }
 main();

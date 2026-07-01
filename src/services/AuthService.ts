@@ -29,7 +29,7 @@ export class AuthService {
         personalPhones: student.personalPhones,
         cpf: student.cpf,
         registrationName: student.registrationName,
-        dateOfBirth: student.dateOfBirth,
+        dateOfBirth: new Date(student.dateOfBirth),
         maritalStatus: student.maritalStatus,
         placeOfBirth: student.placeOfBirth,
         sex: student.sex,
@@ -46,7 +46,7 @@ export class AuthService {
         identityNumber: student.identityNumber,
         issuingAgency: student.issuingAgency,
         issuingState: student.issuingState,
-        issueDate: student.issueDate,
+        issueDate: new Date(student.issueDate),
         voterRegistrationNumber: student.voterRegistrationNumber,
         electoralZone: student.electoralZone,
         electoralSection: student.electoralSection,
@@ -55,7 +55,6 @@ export class AuthService {
         student: {
           create: {
             socialName: student.socialName,
-            educationLevel: student.educationLevel,
             occupation: student.occupation,
             perCapitaIncome: student.perCapitaIncome
           }
@@ -102,7 +101,7 @@ export class AuthService {
         personalPhones: civilServant.personalPhones,
         cpf: civilServant.cpf,
         registrationName: civilServant.registrationName,
-        dateOfBirth: civilServant.dateOfBirth,
+        dateOfBirth: new Date(civilServant.dateOfBirth),
         maritalStatus: civilServant.maritalStatus,
         placeOfBirth: civilServant.placeOfBirth,
         sex: civilServant.sex,
@@ -119,7 +118,7 @@ export class AuthService {
         identityNumber: civilServant.identityNumber,
         issuingAgency: civilServant.issuingAgency,
         issuingState: civilServant.issuingState,
-        issueDate: civilServant.issueDate,
+        issueDate: new Date(civilServant.issueDate),
         voterRegistrationNumber: civilServant.voterRegistrationNumber,
         electoralZone: civilServant.electoralZone,
         electoralSection: civilServant.electoralSection,

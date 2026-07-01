@@ -1,35 +1,50 @@
 import { z } from "zod";
 
-export const registerStudentSchema = z.object({
-  name: z
-    .string({ error: "Nome é obrigatório" })
-    .min(3, "Nome deve ter pelo menos 3 caracteres")
-    .max(100, "Nome deve ter no máximo 100 caracteres"),
+const dateStringSchema = z
+  .string({ error: "Data é obrigatória" })
+  .min(1, "Data é obrigatória")
+  .refine((val) => !isNaN(Date.parse(val)), {
+    message: "Data inválida. Use o formato 2024-01-15",
+  });
 
-  email: z
-    .string({ error: "E-mail é obrigatório" })
-    .email("E-mail inválido"),
+export const baseUserSchema = z.object({
+  name: z.string({ error: "Nome é obrigatório" }).min(3).max(100),
+  email: z.string({ error: "E-mail é obrigatório" }).email("E-mail inválido"),
+  password: z.string({ error: "Senha é obrigatória" }).min(8),
 
-  password: z
-    .string({ error: "Senha é obrigatória" })
-    .min(8, "Senha deve ter pelo menos 8 caracteres"),
+  cpf: z.string({ error: "CPF é obrigatório" }),
+  registrationName: z.string({ error: "Nome de registro é obrigatório" }),
+  personalPhones: z.array(z.string()).optional(),
+  dateOfBirth: dateStringSchema,
+  maritalStatus: z.string({ error: "Estado civil é obrigatório" }),
+  placeOfBirth: z.string({ error: "Local de nascimento é obrigatório" }),
+  sex: z.string({ error: "Sexo é obrigatório" }),
+  bloodType: z.string().optional(),
+  rhFactor: z.string().optional(),
+  numberOfDependents: z.number({ error: "Número de dependentes é obrigatório" }),
+  raceEthnicity: z.string({ error: "Raça/etnia é obrigatória" }),
+  fatherName: z.string().optional(),
+  motherName: z.string().optional(),
+  pisPasep: z.string({ error: "PIS/PASEP é obrigatório" }),
+  academicTitle: z.string({ error: "Título acadêmico é obrigatório" }),
+  educationLevel: z.string({ error: "Nível de escolaridade é obrigatório" }),
+  address: z.string({ error: "Endereço é obrigatório" }),
+  identityNumber: z.string({ error: "Número de identidade é obrigatório" }),
+  issuingAgency: z.string({ error: "Órgão emissor é obrigatório" }),
+  issuingState: z.string({ error: "Estado emissor é obrigatório" }),
+  issueDate: dateStringSchema,
+  voterRegistrationNumber: z.string({ error: "Título de eleitor é obrigatório" }),
+  electoralZone: z.string({ error: "Zona eleitoral é obrigatória" }),
+  electoralSection: z.string({ error: "Seção eleitoral é obrigatória" }),
+  voterRegistrationState: z.string({ error: "Estado do título é obrigatório" }),
+});
 
-  socialName: z
-    .string()
-    .max(100, "Nome social deve ter no máximo 100 caracteres")
-    .optional(),
-
-  educationLevel: z
-    .string({ error: "Nível de escolaridade é obrigatório" })
-    .min(1, "Nível de escolaridade é obrigatório"),
-
-  occupation: z
-    .string({ error: "Ocupação é obrigatória" })
-    .min(1, "Ocupação é obrigatória"),
-
+export const registerStudentSchema = baseUserSchema.extend({
+  socialName: z.string().max(100).optional(),
+  occupation: z.string({ error: "Ocupação é obrigatória" }).min(1),
   perCapitaIncome: z
     .number({ error: "Renda per capita é obrigatória" })
-    .nonnegative("Renda per capita não pode ser negativa"),
+    .nonnegative(),
 });
 
 export type RegisterStudentDto = z.infer<typeof registerStudentSchema>;
