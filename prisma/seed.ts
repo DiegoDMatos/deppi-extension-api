@@ -39,6 +39,10 @@ const deppiPermissions = [
   "enrollment.approve",
   "enrollment.reject",
   "enrollment.cancel",
+  "CREATE_COURSES",
+  "VIEW_COURSES",
+  "UPDATE_COURSES",
+  "DELETE_COURSES"
 ];
 
 for (const permissionSlug of deppiPermissions) {
@@ -81,7 +85,11 @@ for (const permissionSlug of deppiPermissions) {
     "MANAGE_ROLES",
     "MANAGE_USERS",
     "VIEW_PERMISSIONS",
-    "DEPPI_ROLES"
+    "DEPPI_ROLES",
+    "CREATE_COURSES",
+    "VIEW_COURSES",
+    "UPDATE_COURSES",
+    "DELETE_COURSES"
   ];
 
   for (const permissionName of permissions) {

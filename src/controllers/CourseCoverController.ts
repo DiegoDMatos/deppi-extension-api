@@ -4,11 +4,11 @@ import { Request, Response } from "express";
 
 export class CourseCoverController {
   async upload(req: Request, res: Response) {
+
     const coverService = new CourseCoverService();
 
     const coverImage: uploadCoverRequest = {
-      courseId: String(req.params.courseId),
-      userId: String(req.user.id),
+      courseId: String(req.params.id),
       file: req.file
     }
 
@@ -22,7 +22,6 @@ export class CourseCoverController {
 
     const coverImage: showCoverRequest = {
       courseId: String(req.params.taskId),
-      userId: Number(req.user.id),
     }
 
     const filePath = await service.show(coverImage);
