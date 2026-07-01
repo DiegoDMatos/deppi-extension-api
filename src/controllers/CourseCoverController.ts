@@ -7,6 +7,8 @@ export class CourseCoverController {
 
     const coverService = new CourseCoverService();
 
+    console.log(req.params);
+
     const coverImage: uploadCoverRequest = {
       courseId: String(req.params.id),
       file: req.file
@@ -21,7 +23,7 @@ export class CourseCoverController {
     const service = new CourseCoverService();
 
     const coverImage: showCoverRequest = {
-      courseId: String(req.params.taskId),
+      courseId: String(req.params.id),
     }
 
     const filePath = await service.show(coverImage);

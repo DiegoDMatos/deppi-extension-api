@@ -28,8 +28,7 @@ export class CourseController {
   async remove(req: Request, res: Response): Promise<Response> {
     try {
       const id = req.params.id; 
-      
-    
+
       if(!id || typeof id !== 'string'){
       return res.status(400).json({message: "ID inválido ou ausente." });
       }
