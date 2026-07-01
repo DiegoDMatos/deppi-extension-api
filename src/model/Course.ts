@@ -25,5 +25,5 @@ export interface CreateCourseInput {
   generalObjective: string;
   specificObjective: string;
   methodology: string;
-  coverImage?: string;
+  coverImageUrl?: string;
 }

@@ -7,7 +7,7 @@ export class CourseCoverController {
     const coverService = new CourseCoverService();
 
     const coverImage: uploadCoverRequest = {
-      courseId: String(req.params.taskId),
+      courseId: String(req.params.courseId),
       userId: String(req.user.id),
       file: req.file
     }

@@ -109,43 +109,92 @@ for (const permissionSlug of deppiPermissions) {
     });
 
   }
-  /*
+  
   const passwordHash = await bcrypt.hash("123456", 10);
   
   await prisma.user.upsert({
-    where: { email: "admin@email.com" },
-    update: {
-      name: "Admin",
-      passwordHash,
-    },
-    create: {
-      name: "Admin",
-      email: "admin@email.com",
-      passwordHash,
-      roles: {
-        create: {
-          roleId: adminRole.id,
-        }
+  where: { email: "admin@email.com" },
+  update: {
+    name: "Admin",
+    passwordHash,
+  },
+  create: {
+    name: "Admin",
+    email: "admin@email.com",
+    passwordHash,
+    
+    academicTitle: "N/A",
+    address: "Endereço do Sistema",
+    cpf: "00000000000",
+    dateOfBirth: new Date("1990-01-01"),
+    educationLevel: "Superior",
+    electoralSection: "000",
+    electoralZone: "000",
+    identityNumber: "0000000",
+    issueDate: new Date(),
+    issuingAgency: "SSP",
+    issuingState: "SP",
+    maritalStatus: "Solteiro",
+    numberOfDependents: 0,
+    personalPhones: [],
+    pisPasep: "00000000000",
+    placeOfBirth: "Cidade",
+    raceEthnicity: "Não declarada",
+    registrationName: "Admin System",
+    sex: "Outro",
+    voterRegistrationNumber: "000000000000",
+    voterRegistrationState: "SP",
+
+    roles: {
+      create: {
+        roleId: adminRole.id,
       }
-    },
-  });
+    }
+  },
+});
 
   const deppiPasswordHash = await bcrypt.hash("123456", 10);
 
 await prisma.user.upsert({
   where: { email: "deppi@email.com" },
-  update: {},
+  update: {
+    name: "DEPPI",
+    passwordHash: deppiPasswordHash,
+  },
   create: {
     name: "DEPPI",
     email: "deppi@email.com",
     passwordHash: deppiPasswordHash,
+
+    academicTitle: "N/A",
+    address: "Endereço Institucional DEPPI",
+    cpf: "11111111111",
+    dateOfBirth: new Date("2000-01-01"),
+    educationLevel: "Superior",
+    electoralSection: "000",
+    electoralZone: "000",
+    identityNumber: "1111111",
+    issueDate: new Date(),
+    issuingAgency: "SSP",
+    issuingState: "BR",
+    maritalStatus: "Solteiro",
+    numberOfDependents: 0,
+    personalPhones: [],
+    pisPasep: "11111111111",
+    placeOfBirth: "Brasil",
+    raceEthnicity: "Não declarada",
+    registrationName: "DEPPI Institutional",
+    sex: "Outro",
+    voterRegistrationNumber: "111111111111",
+    voterRegistrationState: "BR",
+
     roles: {
       create: {
         roleId: deppiRole.id,
       },
     },
   },
-}); */
+});
 
   console.log("Seed executada com sucesso");
 }
