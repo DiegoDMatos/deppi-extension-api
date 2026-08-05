@@ -32,7 +32,7 @@ async function main() {
     },
   });
 
-  await prisma.role.upsert({
+  const professorRole = await prisma.role.upsert({
     where: { slug: "PROFESSOR" },
     update: {},
     create: {
@@ -41,6 +41,32 @@ async function main() {
       description: "Professor",
     },
   });
+
+  const professorPermissions = [
+    "CREATE_COURSES",
+    "UPDATE_COURSES",
+    "CLOSE_COURSE",
+    "MANAGE_ENROLLMENT",
+  ];
+
+  for (const permissionSlug of professorPermissions) {
+    const permission = await prisma.permission.upsert({
+      where: { slug: permissionSlug },
+      update: {},
+      create: { slug: permissionSlug, name: permissionSlug },
+    });
+
+    await prisma.rolePermission.upsert({
+      where: {
+        roleId_permissionId: {
+          roleId: professorRole.id,
+          permissionId: permission.id,
+        },
+      },
+      update: {},
+      create: { roleId: professorRole.id, permissionId: permission.id },
+    });
+  }
 
   const deppiPermissions = [
     "enrollment.approve",
@@ -51,6 +77,8 @@ async function main() {
     "VIEW_COURSES",
     "UPDATE_COURSES",
     "DELETE_COURSES",
+    "CLOSE_COURSE",
+    "MANAGE_ENROLLMENT",
   ];
 
   for (const permissionSlug of deppiPermissions) {
@@ -83,6 +111,8 @@ async function main() {
     "VIEW_COURSES",
     "UPDATE_COURSES",
     "DELETE_COURSES",
+    "CLOSE_COURSE",
+    "MANAGE_ENROLLMENT",
   ];
 
   for (const permissionName of adminPermissions) {
@@ -171,6 +201,134 @@ async function main() {
       roles: {
         create: { roleId: deppiRole.id },
       },
+    },
+  });
+
+  const servidorPasswordHash = await bcrypt.hash("12345678", 10);
+
+  await prisma.user.upsert({
+    where: { cpf: "98765432100" },
+    update: {},
+    create: {
+      name: "Mariana Oliveira",
+      email: "mariana.oliveira@example.com",
+      passwordHash: servidorPasswordHash,
+      personalPhones: ["85988887777"],
+      cpf: "98765432100",
+      registrationName: "Mariana Oliveira",
+      dateOfBirth: new Date("1990-08-12"),
+      maritalStatus: "Solteira",
+      placeOfBirth: "Sobral",
+      sex: "Feminino",
+      numberOfDependents: 0,
+      raceEthnicity: "Branca",
+      pisPasep: "98765432100",
+      academicTitle: "Mestre",
+      educationLevel: "Ensino Superior Completo",
+      address: "Rua das Acácias, 250",
+      identityNumber: "MG1234567",
+      issuingAgency: "SSP",
+      issuingState: "CE",
+      issueDate: new Date("2012-05-20"),
+      voterRegistrationNumber: "123456722012",
+      electoralZone: "010",
+      electoralSection: "020",
+      voterRegistrationState: "CE",
+
+      roles: {
+        create: {
+          roleId: professorRole.id
+        }
+      },
+
+      civilServant: {
+        create: {
+          registration: "202600123",
+          preferredName: "Mariana",
+
+          institutionalEmail: "mariana.oliveira@ifce.edu.br",
+          siapeEmail: "mariana.siape@ifce.edu.br",
+          passwordRecoveryEmail: "mariana.recuperacao@gmail.com",
+          notificationEmail: "mariana.notificacoes@gmail.com",
+          googleClassroomEmail: "mariana.classroom@gmail.com",
+
+          institutionalPhones: ["85988887777"],
+
+          isInPGD: true,
+
+          suapDepartment: "Departamento de Ensino",
+
+          siapeAssignmentLocation: "IFCE Campus Sobral",
+          siapeExerciseLocation: "IFCE Campus Sobral",
+
+          employmentStatus: "ATIVO",
+
+          workRegime: "40H DE",
+          workSchedule: "08:00 às 17:00",
+
+          operatesXRayEquipment: false,
+
+          publicServiceStartDate: new Date("2018-03-01"),
+          institutionAppointmentDate: new Date("2019-01-15"),
+          institutionExerciseStartDate: new Date("2019-02-01"),
+          positionAppointmentDate: new Date("2019-01-15"),
+          positionExerciseStartDate: new Date("2019-02-01"),
+
+          position: "Professor EBTT",
+          positionClass: "DIII",
+          standard: "04",
+          positionGroup: "Magistério Federal",
+          vacancyCode: "VAGA-2026-001",
+
+          bank: "Caixa Econômica Federal",
+          bankBranch: "1234",
+          checkingAccount: "56789-0"
+        }
+      }
+    }
+  });
+
+  const courseId = "d5bcb9aa-6d5d-4dd0-96d2-6b7e2f4ef0e1";
+
+  await prisma.course.upsert({
+    where: { id: courseId },
+    update: {},
+    create: {
+      institutionId: "ID_DA_INSTITUIÇÃO",
+      title: "Curso de Introdução à Programação",
+      description: "Curso introdutório de lógica de programação e algoritmos.",
+      actionType: "COURSE",
+      thematicArea: "Tecnologia",
+      extensionLine: "Inclusão Digital",
+      startDate: new Date("2026-09-01"),
+      endDate: new Date("2026-11-30"),
+      minParticipants: 20,
+      maxParticipants: 40,
+      workload: 60,
+      location: "IFCE Campus Fortaleza",
+      funding: "Recursos Próprios",
+      institutionalProgram: "Programa de Extensão",
+      offeringModel: "PRESENTIAL",
+      targetMunicipalities: "Fortaleza",
+      evaluationMethods:
+        "Avaliações práticas e frequência mínima de 75%.",
+      marketingMethods:
+        "Divulgação em redes sociais e site institucional.",
+      activitiesPerformed:
+        "Aulas teóricas, práticas e desenvolvimento de projeto final.",
+      responsibleName: "Mariana Oliveira",
+      presentation:
+        "Curso voltado para introdução aos conceitos básicos de programação.",
+      justification:
+        "Capacitar a comunidade em competências essenciais de tecnologia.",
+      targetAudience:
+        "Estudantes do ensino médio e comunidade externa.",
+      generalObjective:
+        "Capacitar os participantes nos fundamentos da programação.",
+      specificObjective:
+        "Ensinar lógica de programação, algoritmos e desenvolvimento de aplicações básicas.",
+      methodology:
+        "Aulas expositivas, atividades práticas e projeto integrador.",
     },
   });
 

@@ -24,6 +24,25 @@ export class CourseService {
     });
   }
 
+  async closeCourse(courseId: string) {
+    const courseExists = await prisma.course.findUnique({
+      where: { id: courseId }
+    });
+
+    if (!courseExists) {
+      throw new Error("Curso não encontrado.");
+    }
+
+    await prisma.course.update({
+      where: {
+        id: courseId,
+      },
+      data: {
+        isActive: false,
+      },
+    });
+  }
+
   async getCourseEnrollmentsReport(courseId: string) {
     return prisma.course.findUnique({
       where: {

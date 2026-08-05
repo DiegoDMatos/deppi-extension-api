@@ -5,6 +5,9 @@ import { roleRouter } from "./routes/role.routes";
 import { courseRouter } from "./routes/courses.routes";
 import enrollmentRoutes from "./routes/enrollments.routes";
 import cors from "cors";
+import { civilServantRoutes } from "./routes/civilServant.routes";
+import { userRoutes } from "./routes/user.routes";
+import { studentRoutes } from "./routes/student.routes";
 
 const app = express();
 
@@ -16,4 +19,8 @@ app.use(permissionRouter);
 app.use(roleRouter);
 app.use(courseRouter);
 app.use("/enrollments", enrollmentRoutes);
+app.use(civilServantRoutes);
+app.use(userRoutes);
+app.use(studentRoutes);
+
 export { app };

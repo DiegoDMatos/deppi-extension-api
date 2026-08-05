@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { baseUserSchema } from "./registerstudent.schema";
+import { updateUserSchema } from "./user.schema";
 
 const dateStringSchema = z
   .string({ error: "Data é obrigatória" })
@@ -60,5 +61,73 @@ export const registerCivilServantSchema = baseUserSchema.extend({
   bankBranch: z.string().optional(),
   checkingAccount: z.string().optional(),
 });
+
+export const updateCivilServantSchema = z.object({
+  preferredName: z
+    .string()
+    .max(100, "Nome preferencial deve ter no máximo 100 caracteres")
+    .optional(),
+
+  institutionalEmail: z
+    .string()
+    .email("E-mail institucional inválido")
+    .optional(),
+
+  siapeEmail: z
+    .string()
+    .email("E-mail SIAPE inválido")
+    .optional(),
+
+  passwordRecoveryEmail: z
+    .string()
+    .email("E-mail de recuperação inválido")
+    .optional(),
+
+  notificationEmail: z
+    .string()
+    .email("E-mail de notificação inválido")
+    .optional(),
+
+  googleClassroomEmail: z
+    .string()
+    .email("E-mail do Google Classroom inválido")
+    .optional(),
+
+  institutionalPhones: z
+    .array(z.string().min(1, "Telefone não pode ser vazio"))
+    .optional(),
+
+  isInPGD: z.boolean().optional(),
+
+  suapDepartment: z
+    .string()
+    .min(1, "Departamento SUAP não pode ser vazio")
+    .optional(),
+
+  siapeAssignmentLocation: z.string().optional(),
+  siapeExerciseLocation: z.string().optional(),
+
+  employmentStatus: z
+    .string()
+    .min(1, "Situação funcional não pode ser vazia")
+    .optional(),
+
+  workRegime: z.string().optional(),
+  workSchedule: z.string().optional(),
+
+  operatesXRayEquipment: z.boolean().optional(),
+
+  position: z.string().min(1, "Cargo não pode ser vazio").optional(),
+  positionClass: z.string().min(1, "Classe do cargo não pode ser vazia").optional(),
+  standard: z.string().min(1, "Padrão não pode ser vazio").optional(),
+  positionGroup: z.string().min(1, "Grupo do cargo não pode ser vazio").optional(),
+  vacancyCode: z.string().min(1, "Código de vaga não pode ser vazio").optional(),
+
+  bank: z.string().optional(),
+  bankBranch: z.string().optional(),
+  checkingAccount: z.string().optional(),
+});
+
+export type UpdateCivilServantDto = z.infer<typeof updateCivilServantSchema>;
 
 export type RegisterCivilServantDto = z.infer<typeof registerCivilServantSchema>;

@@ -22,7 +22,7 @@ router.post("/", validate(enrollSchema), enroll);
 router.get("/me", listMyEnrollments);
 router.patch("/:enrollmentId/status", validate(updateEnrollmentStatusSchema), updateStatus);
 router.get("/:enrollmentId/history", listHistory);
-router.get("/course/:courseId", listCourseEnrollments);
+router.get("/course/:courseId", permissionMiddleware("MANAGE_ENROLLMENT"), listCourseEnrollments);
 router.get("/enrollment/status", permissionMiddleware("DEPPI_ROLES"), getEnrollmentsByStatusReport);
 
 router.patch(
