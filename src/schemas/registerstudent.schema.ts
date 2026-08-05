@@ -9,7 +9,7 @@ const dateStringSchema = z
 
 export const baseUserSchema = z.object({
   name: z.string({ error: "Nome é obrigatório" }).min(3).max(100),
-  email: z.string({ error: "E-mail é obrigatório" }).email("E-mail inválido"),
+  email: z.email({ error: "E-mail inválido" }),
   password: z.string({ error: "Senha é obrigatória" }).min(8),
 
   cpf: z.string({ error: "CPF é obrigatório" }),
@@ -46,5 +46,16 @@ export const registerStudentSchema = baseUserSchema.extend({
     .number({ error: "Renda per capita é obrigatória" })
     .nonnegative(),
 });
+
+export const updateStudentSchema = z.object({
+  socialName: z.string().max(100).optional(),
+  occupation: z.string().min(1).optional(),
+  perCapitaIncome: z
+    .number()
+    .nonnegative()
+    .optional(),
+});
+
+export type UpdateStudentDto = z.infer<typeof updateStudentSchema>;
 
 export type RegisterStudentDto = z.infer<typeof registerStudentSchema>;

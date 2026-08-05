@@ -101,6 +101,7 @@ model Course {
   extensionLine        String
   startDate            DateTime
   endDate              DateTime
+  isActive             Boolean      @default(true)
   minParticipants      Int
   maxParticipants      Int
   workload             Int
@@ -169,11 +170,12 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-model Student{
-  id String @id @default(uuid())
-  userId String @unique
-  socialName String?
-  occupation String
+
+model Student {
+  id              String       @id @default(uuid())
+  userId          String       @unique
+  socialName      String?
+  occupation      String
   perCapitaIncome Float
   user            User         @relation(fields: [userId], references: [id])
   enrollments     Enrollment[]
@@ -186,6 +188,7 @@ model CivilServant {
   userId                       String    @unique
   registration                 String?   @unique
   preferredName                String?
+  isActive                     Boolean   @default(true)
   institutionalEmail           String    @unique
   siapeEmail                   String?   @unique
   passwordRecoveryEmail        String?

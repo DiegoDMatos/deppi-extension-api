@@ -3,7 +3,7 @@ import { CreateCourseInput } from "../model/Course";
 
 export class CourseService {
   async create(data: CreateCourseInput) {
-     if (new Date(data.startDate) >= new Date(data.endDate)) {
+    if (new Date(data.startDate) >= new Date(data.endDate)) {
       throw new Error("A data de início deve ser anterior à data de término.");
     }
 
@@ -21,6 +21,25 @@ export class CourseService {
       orderBy: {
         startDate: 'desc'
       }
+    });
+  }
+
+  async closeCourse(courseId: string) {
+    const courseExists = await prisma.course.findUnique({
+      where: { id: courseId }
+    });
+
+    if (!courseExists) {
+      throw new Error("Curso não encontrado.");
+    }
+
+    await prisma.course.update({
+      where: {
+        id: courseId,
+      },
+      data: {
+        isActive: false,
+      },
     });
   }
 
@@ -57,7 +76,7 @@ export class CourseService {
     });
   }
 
-  async getGeneralReport(){
+  async getGeneralReport() {
     const [totalCourses, totalStudents, totalCivilServants, totalEnrollments,] = await Promise.all([
       prisma.course.count(),
       prisma.student.count(),
