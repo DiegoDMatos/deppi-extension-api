@@ -6,6 +6,23 @@ datasource db {
   provider = "postgresql"
 }
 
+enum CourseStatusEnum {
+  DRAFT
+  PUBLISHED
+  IN_PROGRESS
+  FINISHED
+  CANCELED
+}
+
+enum EnrollmentStatusEnum {
+  PENDING
+  APPROVED
+  REJECTED
+  ACTIVE
+  COMPLETED
+  CANCELED
+}
+
 model User {
   id                      String        @id @default(uuid())
   name                    String
@@ -92,9 +109,10 @@ model RolePermission {
 }
 
 model Course {
-  id                   String       @id @default(uuid())
+  id                   String           @id @default(uuid())
   institutionId        String
   title                String
+  status               CourseStatusEnum @default(DRAFT)
   description          String?
   actionType           String
   thematicArea         String
@@ -119,10 +137,10 @@ model Course {
   generalObjective     String
   specificObjective    String
   methodology          String
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt
-  coverId              String?      @unique
-  coverImage           File?        @relation(fields: [coverId], references: [id])
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  coverId              String?          @unique
+  coverImage           File?            @relation(fields: [coverId], references: [id])
   enrollments          Enrollment[]
 
   @@map("courses")
@@ -169,11 +187,12 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-model Student{
-  id String @id @default(uuid())
-  userId String @unique
-  socialName String?
-  occupation String
+
+model Student {
+  id              String       @id @default(uuid())
+  userId          String       @unique
+  socialName      String?
+  occupation      String
   perCapitaIncome Float
   user            User         @relation(fields: [userId], references: [id])
   enrollments     Enrollment[]
@@ -218,13 +237,4 @@ model CivilServant {
   user                         User      @relation(fields: [userId], references: [id])
 
   @@map("civil_servants")
-}
-
-enum EnrollmentStatusEnum {
-  PENDING
-  APPROVED
-  REJECTED
-  ACTIVE
-  COMPLETED
-  CANCELED
 }

@@ -1,9 +1,16 @@
+import { CourseStatusEnum } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { CreateCourseInput } from "../model/Course";
 
+interface CourseFilters {
+  search?: string;
+  thematicArea?: string;
+  offeringModel?: string;
+}
+
 export class CourseService {
   async create(data: CreateCourseInput) {
-     if (new Date(data.startDate) >= new Date(data.endDate)) {
+    if (new Date(data.startDate) >= new Date(data.endDate)) {
       throw new Error("A data de início deve ser anterior à data de término.");
     }
 
@@ -16,10 +23,71 @@ export class CourseService {
     });
   }
 
-  async findAll() {
+  async findAll(filters?: CourseFilters) {
+    const { search, thematicArea, offeringModel } = filters || {};
+
     return await prisma.course.findMany({
+      where: {
+        OR: search
+          ? [
+              { title: { contains: search, mode: 'insensitive' } },
+              { description: { contains: search, mode: 'insensitive' } },
+            ]
+          : undefined,
+        thematicArea: thematicArea ? thematicArea : undefined,
+        offeringModel: offeringModel ? offeringModel : undefined,
+      },
       orderBy: {
         startDate: 'desc'
+      }
+    });
+  }
+
+  async findById(id: string) {
+    const course = await prisma.course.findUnique({
+      where: { id },
+      include: {
+        coverImage: true,
+      }
+    });
+
+    if (!course) {
+      throw new Error("Curso não encontrado.");
+    }
+
+    return course;
+  }
+
+  async updateStatus(id: string, status: string) {
+    const courseExists = await prisma.course.findUnique({
+      where: { id }
+    });
+
+    if (!courseExists) {
+      throw new Error("Curso não encontrado.");
+    }
+
+    return await prisma.course.update({
+      where: { id },
+      data: {
+        status: status as CourseStatusEnum,
+      },
+    });
+  }
+
+  async assignTeacher(courseId: string, teacherName: string) {
+    const courseExists = await prisma.course.findUnique({
+      where: { id: courseId }
+    });
+
+    if (!courseExists) {
+      throw new Error("Curso não encontrado.");
+    }
+
+    return await prisma.course.update({
+      where: { id: courseId },
+      data: {
+        responsibleName: teacherName
       }
     });
   }

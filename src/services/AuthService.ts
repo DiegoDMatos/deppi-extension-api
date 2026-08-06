@@ -15,7 +15,7 @@ export class AuthService {
       }
     });
 
-    if(userAlreadyExists){
+    if (userAlreadyExists) {
       throw new Error("Usuário já existe");
     }
 
@@ -69,14 +69,14 @@ export class AuthService {
             }
           }
         }
-    }
+      }
     });
 
     return {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
+      id: user.id,
+      name: user.name,
+      email: user.email
+    };
   }
 
   async registerCivilServant(civilServant: RegisterCivilServantDto, role: "DEPPI" | "PROFESSOR") {
@@ -87,7 +87,7 @@ export class AuthService {
       }
     });
 
-    if(userAlreadyExists){
+    if (userAlreadyExists) {
       throw new Error("Usuário já existe");
     }
 
@@ -177,50 +177,66 @@ export class AuthService {
             }
           }
         }
-    }
+      }
     });
 
     return {
-            id: user.id,
-            name: user.name,
-            email: user.email
-        };
+      id: user.id,
+      name: user.name,
+      email: user.email
+    };
   }
 
-async login(email: string, password: string){
+  async login(email: string, password: string) {
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email
+    const user = await prisma.user.findUnique({
+      where: {
+        email
+      },
+      include: {
+        roles: {
+          include: {
+            role: true
+          }
+        }
+      }
+    });
+
+    if (!user) {
+      throw new Error("Email ou senha inválidos");
     }
-  });
 
-  if(!user){
-    throw new Error("Email ou senha inválidos");
-  }
+    const passwordMatch = await bcrypt.compare(
+      password,
+      user.passwordHash
+    );
 
-  const passwordMatch = await bcrypt.compare(
-    password,
-    user.passwordHash
-  );
-
-  if(!passwordMatch){
-    throw new Error("Email ou senha inválidos");
-  }
-
-  const token = jwt.sign(
-    {
-      sub: user.id
-    },
-    process.env.JWT_SECRET!,
-    {
-      expiresIn: "1d"
+    if (!passwordMatch) {
+      throw new Error("Email ou senha inválidos");
     }
-  );
 
-  return {
-    token
-  };
-}
+    const userRoles = user.roles.map(r => r.role.slug);
+
+    const token = jwt.sign(
+      {
+        sub: user.id,
+        roles: userRoles
+      },
+      process.env.JWT_SECRET || "default_secret_key",
+      {
+        expiresIn: "1d"
+      }
+    );
+
+    return {
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        roles: userRoles
+      }
+    };
+  }
 
 }
