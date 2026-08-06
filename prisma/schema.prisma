@@ -41,6 +41,7 @@ model User {
   student                 Student?
   civilServant            CivilServant?
   roles                   UserRole[]
+  PasswordResetTokens     PasswordResetToken[]
 
   @@map("users")
 }
@@ -227,4 +228,20 @@ enum EnrollmentStatusEnum {
   ACTIVE
   COMPLETED
   CANCELED
+}
+
+model PasswordResetToken{
+  id             String       @id @default(uuid())
+
+  userId         String
+  tokenHash      String
+  
+  expiresAt      DateTime
+  createdAt      DateTime     @default(now())
+  usedAt         DateTime?
+
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
+
 }
