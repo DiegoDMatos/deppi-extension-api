@@ -7,22 +7,22 @@ datasource db {
 }
 
 model User {
-  id                      String        @id @default(uuid())
+  id                      String               @id @default(uuid())
   name                    String
-  email                   String        @unique
-  passwordHash            String        @map("password_hash")
-  createdAt               DateTime      @default(now())
-  updatedAt               DateTime      @updatedAt
+  email                   String               @unique
+  passwordHash            String               @map("password_hash")
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
   academicTitle           String
   address                 String
   bloodType               String?
-  cpf                     String        @unique
+  cpf                     String               @unique
   dateOfBirth             DateTime
   educationLevel          String
   electoralSection        String
   electoralZone           String
   fatherName              String?
-  identityNumber          String        @unique
+  identityNumber          String               @unique
   issueDate               DateTime
   issuingAgency           String
   issuingState            String
@@ -30,13 +30,13 @@ model User {
   motherName              String?
   numberOfDependents      Int
   personalPhones          String[]
-  pisPasep                String        @unique
+  pisPasep                String               @unique
   placeOfBirth            String
   raceEthnicity           String
   registrationName        String
   rhFactor                String?
   sex                     String
-  voterRegistrationNumber String        @unique
+  voterRegistrationNumber String               @unique
   voterRegistrationState  String
   student                 Student?
   civilServant            CivilServant?
@@ -170,11 +170,12 @@ model EnrollmentStatusHistory {
 
   @@map("enrollment_status_history")
 }
-model Student{
-  id String @id @default(uuid())
-  userId String @unique
-  socialName String?
-  occupation String
+
+model Student {
+  id              String       @id @default(uuid())
+  userId          String       @unique
+  socialName      String?
+  occupation      String
   perCapitaIncome Float
   user            User         @relation(fields: [userId], references: [id])
   enrollments     Enrollment[]
@@ -230,18 +231,17 @@ enum EnrollmentStatusEnum {
   CANCELED
 }
 
-model PasswordResetToken{
-  id             String       @id @default(uuid())
+model PasswordResetToken {
+  id String @id @default(uuid())
 
-  userId         String
-  tokenHash      String
-  
-  expiresAt      DateTime
-  createdAt      DateTime     @default(now())
-  usedAt         DateTime?
+  userId    String
+  tokenHash String @unique
 
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  usedAt    DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("password_reset_tokens")
-
 }
