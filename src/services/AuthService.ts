@@ -79,7 +79,7 @@ export class AuthService {
     };
   }
 
-  async registerCivilServant(civilServant: RegisterCivilServantDto, role: "DEPPI" | "PROFESSOR") {
+  async registerCivilServant(civilServant: RegisterCivilServantDto, role: string) {
 
     const userAlreadyExists = await prisma.user.findUnique({
       where: {
